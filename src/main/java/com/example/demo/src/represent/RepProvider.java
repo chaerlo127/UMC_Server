@@ -2,6 +2,7 @@ package com.example.demo.src.represent;
 
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.represent.model.GetFoodRes;
 import com.example.demo.src.represent.model.GetRepRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
