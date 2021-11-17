@@ -1,6 +1,5 @@
 package com.example.demo.src.represent;
 
-import com.example.demo.src.represent.model.GetFoodRes;
 import com.example.demo.src.represent.model.GetRepRes;
 import com.example.demo.src.represent.model.PatchRepReq;
 import org.springframework.beans.factory.annotation.Autowired;

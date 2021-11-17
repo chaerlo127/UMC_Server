@@ -1,4 +1,4 @@
-package com.example.demo.src.represent.model;
+package com.example.demo.src.food.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,8 +8,6 @@ import lombok.Setter;
 @Setter // 해당 클래스에 대한 설정자 생성
 @AllArgsConstructor
 public class GetFoodRes {
-    private int repInx;
-    private String name;
     private int foodInx;
-//    private String foodName;
+    private String foodName;
 }
