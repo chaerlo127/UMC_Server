@@ -6,7 +6,7 @@
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
 *.orig
-.src/main/com.example.dmo/conflg/secret/Secret.java
+src/main/java/com/example/demo/config/secret/Secret.java
 
 # Created by git when using merge tools for conflicts
 *.BACKUP.*
