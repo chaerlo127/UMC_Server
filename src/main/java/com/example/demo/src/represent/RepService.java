@@ -2,6 +2,7 @@ package com.example.demo.src.represent;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.represent.model.DeleteRepReq;
 import com.example.demo.src.represent.model.PatchRepReq;
 import com.example.demo.src.represent.model.PostRepReq;
 import com.example.demo.src.represent.model.PostRepRes;
@@ -63,6 +64,18 @@ public class RepService {
 //            String jwt = jwtService.createJwt(userIdx);
 //            return new PostUserRes(jwt,userIdx);
 //  *********************************************************************
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //하나의 가게 정보 삭제
+    public void deleteRep(DeleteRepReq deleteRepReq) throws BaseException {
+        try {
+            int result = repDao.deleteRep(deleteRepReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(DELETE_FAIL_ROWS_REP);
+            }
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(DATABASE_ERROR);
         }

@@ -150,4 +150,12 @@ public class UserDao {
                         rs.getString("Address")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getUserParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
     }
+
+    //USER table tuple 삭제
+    public int deleteUser(DeleteUserReq deleteUserReq) {
+        String deleteUserQuery = "delete from User where userIdx = ?"; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
+        Object[] deleteUserParams = new Object[]{deleteUserReq.getUserIdx()}; // 주입될 값들(nickname, userIdx) 순
+
+        return this.jdbcTemplate.update(deleteUserQuery, deleteUserParams);
+    }
 }

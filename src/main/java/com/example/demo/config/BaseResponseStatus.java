@@ -25,6 +25,9 @@ public enum BaseResponseStatus {
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
 
+
+    //[GET] /foods
+    GET_FOODS_DONT_HAVE_FOODNAME(false, 2014, "foodName을 입력할 필요 없습니다."),
     // [POST] /users
     POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
@@ -59,6 +62,16 @@ public enum BaseResponseStatus {
     //[PATCH] /users/{userIdx}
     MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
     MODIFY_FAIL_REPPRICE(false, 4015, "rep min_price 수정 실패"),
+    MODIFY_FAIL_FOODNAME(false,4016,"FOODNAME 수정 실패"),
+
+    //[DELETE] /users/{userIdx}
+    DELETE_FAIL_ROWS_USER(false,4017,"지정한 foodInx의 tuple이 없습니다."),
+    //[DELETE] /represents/{repInx}
+    DELETE_FAIL_ROWS_REP(false,4018,"지정한 foodInx의 tuple이 없습니다."),
+    //[DELETE] /foods/{foodsInx}
+    DELETE_FAIL_ROWS_FOOD(false,4019,"지정한 foodInx의 tuple이 없습니다."),
+
+
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");

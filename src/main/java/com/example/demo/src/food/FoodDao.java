@@ -1,13 +1,16 @@
 package com.example.demo.src.food;
 
 
+import com.example.demo.src.food.Model.DeleteFoodReq;
 import com.example.demo.src.food.Model.GetFoodRes;
+import com.example.demo.src.food.Model.PatchFoodReq;
 import com.example.demo.src.food.Model.PostFoodReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class FoodDao {
@@ -51,4 +54,28 @@ public class FoodDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userIdx번호를 반환한다.
     }
 
+    public int modifyFoodName(PatchFoodReq patchFoodReq) {
+        String modifyFoodNameQuery = "update Food set foodName = ? where foodInx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
+        Object[] modifyFoodNameParams = new Object[]{patchFoodReq.getFoodName(), patchFoodReq.getFoodInx()}; // 주입될 값들(nickname, userIdx) 순
+
+        return this.jdbcTemplate.update(modifyFoodNameQuery, modifyFoodNameParams);
+
+    }
+
+    //foods 전부 조회
+    public List<GetFoodRes> getFoods() {
+        String getFoodsQuery = "select * from Food"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
+        return this.jdbcTemplate.query(getFoodsQuery,
+                (rs, rowNum) -> new GetFoodRes(
+                        rs.getInt("foodInx"),
+                        rs.getString("foodName")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+        ); // 복수개의 회원정보들을 얻기 위해 jdbcTemplate 함수(Query, 객체 매핑 정보)의 결과 반환(동적쿼리가 아니므로 Parmas부분이 없음)
+    }
+
+    public int deleteFoodName(DeleteFoodReq deleteFoodReq) {
+        String deleteFoodNameQuery = "delete from Food where foodInx = ?"; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
+        Object[] deleteFoodNameParams = new Object[]{deleteFoodReq.getFoodInx()}; // 주입될 값들(nickname, userIdx) 순
+
+        return this.jdbcTemplate.update(deleteFoodNameQuery, deleteFoodNameParams);
+    }
 }

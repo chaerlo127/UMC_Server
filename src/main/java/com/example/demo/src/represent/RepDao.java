@@ -1,9 +1,6 @@
 package com.example.demo.src.represent;
 
-import com.example.demo.src.represent.model.GetFoodRes;
-import com.example.demo.src.represent.model.GetRepRes;
-import com.example.demo.src.represent.model.PatchRepReq;
-import com.example.demo.src.represent.model.PostRepReq;
+import com.example.demo.src.represent.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -90,9 +87,9 @@ public class RepDao {
 
     public int modifyMinPrice(PatchRepReq patchRepReq) {
         String modifyMinPriceQuery = "update Represent set min_price = ? where repInx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
-        Object[] modifyMinpriceParams = new Object[]{patchRepReq.getMin_price(), patchRepReq.getRepInx()}; // 주입될 값들(nickname, userIdx) 순
+        Object[] modifyMinPriceParams = new Object[]{patchRepReq.getMin_price(), patchRepReq.getRepInx()}; // 주입될 값들(nickname, userIdx) 순
 
-        return this.jdbcTemplate.update(modifyMinPriceQuery, modifyMinpriceParams);
+        return this.jdbcTemplate.update(modifyMinPriceQuery, modifyMinPriceParams);
 
     }
 
@@ -118,5 +115,13 @@ public class RepDao {
 
         String lastInsertIdQuery = "select last_insert_id()"; // 가장 마지막에 삽입된(생성된) id값은 가져온다.
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
+
+    //REP 삭제<TUPLE>
+    public int deleteRep(DeleteRepReq deleteRepReq) {
+        String deleteFoodNameQuery = "delete from Represent where RepInx = ?"; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
+        Object[] deleteFoodNameParams = new Object[]{deleteRepReq.getRepInx()}; // 주입될 값들(nickname, userIdx) 순
+
+        return this.jdbcTemplate.update(deleteFoodNameQuery, deleteFoodNameParams);
     }
 }

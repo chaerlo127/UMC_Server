@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.example.demo.config.BaseResponseStatus.*;
+import java.util.List;
+
+import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
 public class FoodProvider {
@@ -40,7 +42,13 @@ public class FoodProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
-
+    public List<GetFoodRes> getFoods() throws BaseException {
+        try {
+            List<GetFoodRes> getFoodRes = foodDao.getFoods();
+            return getFoodRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 }

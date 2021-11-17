@@ -3,6 +3,8 @@ package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.food.Model.DeleteFoodReq;
+import com.example.demo.src.user.model.DeleteUserReq;
 import com.example.demo.src.user.model.PatchUserReq;
 import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.src.user.model.PostUserRes;
@@ -81,6 +83,17 @@ public class UserService {
         }
     }
 
+    //userIdx에 따른 하나의 회원 삭제, User table의 tuple 삭제
+    public void deleteUser(DeleteUserReq deleteUserReq) throws BaseException {
+        try {
+            int result = userDao.deleteUser(deleteUserReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(DELETE_FAIL_ROWS_USER);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 
 }

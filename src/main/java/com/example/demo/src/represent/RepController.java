@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 
@@ -120,6 +119,33 @@ public class RepController{
         try {
             PostRepRes postRepRes = repService.createRep(postRepReq);
             return new BaseResponse<>(postRepRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
+    //DELETE REP INFORMATION<TUPLE OF REPRESENT TABLE>
+    @ResponseBody
+    @DeleteMapping("/{repInx}")
+    public BaseResponse<String> DeleteFood(@PathVariable("repInx") int repInx) {
+        try {
+/**
+ *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
+ //jwt에서 idx 추출.
+ int userIdxByJwt = jwtService.getUserIdx();
+ //userIdx와 접근한 유저가 같은지 확인
+ if(userIdx != userIdxByJwt){
+ return new BaseResponse<>(INVALID_USER_JWT);
+ }
+ //같다면 유저네임 변경
+ **************************************************************************
+ */
+            DeleteRepReq deleteRepReq = new DeleteRepReq(repInx);
+            repService.deleteRep(deleteRepReq);
+
+            String result = "RepID:" +repInx+ " 정보가 삭제되었습니다.";
+            return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
