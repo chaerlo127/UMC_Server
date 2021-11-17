@@ -2,17 +2,17 @@ package com.example.demo.src.represent;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.represent.model.GetFoodRes;
-import com.example.demo.src.represent.model.GetRepRes;
-import com.example.demo.src.represent.model.PatchRepReq;
-import com.example.demo.src.represent.model.Represent;
+import com.example.demo.config.BaseResponseStatus;
+import com.example.demo.src.represent.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+
 
 @RestController // Rest API 또는 WebAPI를 개발하기 위한 어노테이션. @Controller + @ResponseBody 를 합친것.
 // @Controller      [Presentation Layer에서 Contoller를 명시하기 위해 사용]
@@ -110,7 +110,20 @@ public class RepController{
         }
     }
 
-
+    // rep 회원가입
+    @ResponseBody
+    @PostMapping("/rep-sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
+    public BaseResponse<PostRepRes> createRepresents(@RequestBody PostRepReq postRepReq) {
+        if (postRepReq.getRepId() == null) {
+            return new BaseResponse<>(BaseResponseStatus.POST_REPS_EMPTY_REPID);
+        }
+        try {
+            PostRepRes postRepRes = repService.createRep(postRepReq);
+            return new BaseResponse<>(postRepRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 
 }

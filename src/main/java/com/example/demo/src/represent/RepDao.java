@@ -3,6 +3,7 @@ package com.example.demo.src.represent;
 import com.example.demo.src.represent.model.GetFoodRes;
 import com.example.demo.src.represent.model.GetRepRes;
 import com.example.demo.src.represent.model.PatchRepReq;
+import com.example.demo.src.represent.model.PostRepReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -96,5 +97,26 @@ public class RepDao {
     }
 
 
+    //repId 중복 확인
+    public int checkRepId(String repId) {
+        String checkRepNameQuery = "select exists(select repId from Represent where repId = ?)";
+        String checkRepNameParams = repId;
+        return this.jdbcTemplate.queryForObject(checkRepNameQuery,
+                int.class,
+                checkRepNameParams);
+    }
 
+    //represent 회원가입
+    public int createRep(PostRepReq postRepReq) {
+        String createRepQuery = "insert into Represent (name, repId, password, min_price, address, " +
+                "close_time, foodInx, closed_date, phone) VALUES (?,?,?,?,?,?,?,?,?)"; // 실행될 동적 쿼리문
+        Object[] createRepParams = new Object[]{postRepReq.getName(), postRepReq.getRepId(), postRepReq.getPassword(),
+        postRepReq.getMin_price(), postRepReq.getAddress(), postRepReq.getClose_time(), postRepReq.getFoodInx(),
+        postRepReq.getClosed_date(), postRepReq.getPhone()}; // 동적 쿼리의 ?부분에 주입될 값
+        this.jdbcTemplate.update(createRepQuery, createRepParams);
+
+
+        String lastInsertIdQuery = "select last_insert_id()"; // 가장 마지막에 삽입된(생성된) id값은 가져온다.
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
 }

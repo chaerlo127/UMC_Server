@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class FoodProvider {
@@ -32,6 +32,15 @@ public class FoodProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public int checkFoodName(String Name) throws BaseException{
+        try{
+            return foodDao.checkFoodName(Name);
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 
 
 }

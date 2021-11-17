@@ -29,6 +29,12 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
+    // [POST] /foods
+    POST_FOODS_EMPTY_NAME(false, 2018, "FOODNAME을 입력해주세요"),
+    POST_FOODS_EXISTS_NAME(false,2019,"중복된 FOODNAME입니다."),
+    // [POST] /represents
+    POST_REPS_EMPTY_REPID(false,2020,"REPID를 입력해주세요"),
+    POST_REPS_EXISTS_REPID(false,2021,"중복된 REPID입니다."),
 
 
 

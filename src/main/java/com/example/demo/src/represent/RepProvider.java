@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 
 @Service
@@ -66,6 +66,14 @@ public class RepProvider {
             List<GetFoodRes> getFoodRes = repDao.getrepByFoodInx(foodInx);
             return getFoodRes;
         } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkRepId(String repId) throws BaseException {
+        try{
+            return repDao.checkRepId(repId);
+        }catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
     }

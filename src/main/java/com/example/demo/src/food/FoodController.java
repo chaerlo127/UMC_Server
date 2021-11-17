@@ -4,9 +4,13 @@ package com.example.demo.src.food;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.food.Model.GetFoodRes;
+import com.example.demo.src.food.Model.PostFoodReq;
+import com.example.demo.src.food.Model.PostFoodRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import static com.example.demo.config.BaseResponseStatus.*;
+
 
 @RestController
 @RequestMapping("/app/foods")
@@ -40,6 +44,23 @@ public class FoodController {
         }
 
     }
+
+    //food 추가히기 users/sign-up 과 같은 내용
+    @ResponseBody
+    @PostMapping("/addfood")
+    public BaseResponse<PostFoodRes> createFood(@RequestBody PostFoodReq postFoodReq){
+        if(postFoodReq.getFoodName() == null){
+            return new BaseResponse<>(POST_FOODS_EMPTY_NAME);
+        }
+        try{
+            PostFoodRes postFoodRes = foodService.createFood(postFoodReq);
+            return new BaseResponse<>(postFoodRes);
+
+        } catch (BaseException e){
+            return new BaseResponse<>((e.getStatus()));
+        }
+    }
+
 
 
 }
