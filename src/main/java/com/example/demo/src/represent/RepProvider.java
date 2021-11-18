@@ -75,9 +75,21 @@ public class RepProvider {
         }
     }
 
+    //all 불러오기
     public List<GetRepRes> getrepByRepId(String repId) throws BaseException{
         try {
             List<GetRepRes> getRepRes = repDao.getrepsByrepId(repId);
+            return getRepRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    //page 형식으로 rep 불러오기
+    public List<GetRepRes> getrepPage(int page, int size) throws BaseException{
+        try {
+            String pageSQL = Integer.toString(size*(page-1));
+            String sizeSQL = Integer.toString(size);
+            List<GetRepRes> getRepRes = repDao.getrepsPage(pageSQL, sizeSQL);
             return getRepRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

@@ -63,8 +63,10 @@ public class FoodDao {
     }
 
     //foods 전부 조회
-    public List<GetFoodRes> getFoods() {
-        String getFoodsQuery = "select * from Food"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
+    public List<GetFoodRes> getFoods(String pageSQL, String sizeSQL) {
+
+
+        String getFoodsQuery = "select * from Food limit "+ pageSQL +","+ sizeSQL; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
         return this.jdbcTemplate.query(getFoodsQuery,
                 (rs, rowNum) -> new GetFoodRes(
                         rs.getInt("foodInx"),

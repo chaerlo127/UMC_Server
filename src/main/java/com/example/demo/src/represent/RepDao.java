@@ -71,6 +71,24 @@ public class RepDao {
                 getRepByrepIdParams);
     }
 
+    public List<GetRepRes> getrepsPage(String pageSQL, String sizeSQL) {
+        String getRepByrepIdQuery = "select repInx,name,RepId,password,min_price," +
+                "address,close_time,phone,foodInx from Represent limit " + pageSQL+","+sizeSQL; // 해당 이메일을 만족하는 유저를 조회하는 쿼리문
+
+        return this.jdbcTemplate.query(getRepByrepIdQuery,
+                (rs, rowNum) -> new GetRepRes(
+                        rs.getInt("repInx"),
+                        rs.getString("name"),
+                        rs.getString("RepId"),
+                        rs.getString("password"),
+                        rs.getInt("min_price"),
+                        rs.getString("address"),
+                        rs.getString("close_time"),
+                        rs.getString("phone"),
+                        rs.getInt("foodInx"))
+        );
+    }
+
     public List<GetFoodRes> getrepByFoodInx(int foodInx) {
         String getRepByFoodInx = "select repInx, name, foodInx " +
                 "from Represent " +

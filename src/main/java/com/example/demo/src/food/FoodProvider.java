@@ -42,9 +42,11 @@ public class FoodProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-    public List<GetFoodRes> getFoods() throws BaseException {
+    public List<GetFoodRes> getFoods(int page, int size) throws BaseException {
         try {
-            List<GetFoodRes> getFoodRes = foodDao.getFoods();
+            String pageSQL = Integer.toString(size*(page-1));
+            String sizeSQL = Integer.toString(size);
+            List<GetFoodRes> getFoodRes = foodDao.getFoods(pageSQL, sizeSQL);
             return getFoodRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

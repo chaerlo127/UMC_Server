@@ -81,6 +81,19 @@ public class RepController{
         }
     }
 
+    @ResponseBody
+    @GetMapping("/page-of-all")
+    public BaseResponse<List<GetRepRes>> getRepsPage(@RequestParam(required = false) int page,
+                                                     @RequestParam(required = false) int size){
+        try {
+
+            List<GetRepRes> getRepRes = repProvider.getrepPage(page, size);
+            return new BaseResponse<>(getRepRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 
     //foodInx에 따른 가게 회원정보 불러오기 < 여러개 불러올 수 있음>
     @ResponseBody
