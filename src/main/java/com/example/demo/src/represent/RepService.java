@@ -50,20 +50,18 @@ public class RepService {
         try {
             // 암호화: postUserReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장합니다.
             // ex) password123 -> dfhsjfkjdsnj4@!$!@chdsnjfwkenjfnsjfnjsd.fdsfaifsadjfjaf
-            pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postRepReq.getPassword()); // 암호화코드
+            pwd = new AES128(Secret.REP_INFO_PASSWORD_KEY).encrypt(postRepReq.getPassword()); // 암호화코드
             postRepReq.setPassword(pwd);
         } catch (Exception ignored) { // 암호화가 실패하였을 경우 에러 발생
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
         }
         try {
             int repInx = repDao.createRep(postRepReq);
-            return new PostRepRes(repInx);
-
-//  *********** 해당 부분은 7주차 수업 후 주석해제하서 대체해서 사용해주세요! ***********
+//            return new PostRepRes(repInx);
 //            //jwt 발급.
-//            String jwt = jwtService.createJwt(userIdx);
-//            return new PostUserRes(jwt,userIdx);
-//  *********************************************************************
+            String jwt = jwtService.createRepJwt(repInx);
+            return new PostRepRes(repInx, jwt);
+
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(DATABASE_ERROR);
         }

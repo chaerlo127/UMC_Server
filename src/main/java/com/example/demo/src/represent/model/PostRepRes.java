@@ -10,4 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostRepRes {
     private int repInx;
+    private String jwt;
 }

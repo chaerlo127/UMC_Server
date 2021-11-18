@@ -2,7 +2,6 @@ package com.example.demo.src.represent;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.represent.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -11,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+import static com.example.demo.config.BaseResponseStatus.POST_REPS_EMPTY_REPID;
 
 
 @RestController // Rest API 또는 WebAPI를 개발하기 위한 어노테이션. @Controller + @ResponseBody 를 합친것.
@@ -35,7 +37,13 @@ public class RepController{
         this.repService = repService;
         this.jwtService = jwtService;
     }
-    @ResponseBody
+
+    /*
+    * jwt 사용
+    *
+    * */
+    //하나의 회원정보 불러오기기
+   @ResponseBody
     @GetMapping("/{repInx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
     public BaseResponse<GetRepRes> getRep(@PathVariable("repInx") int repInx) {
         // @PathVariable RESTful(URL)에서 명시된 파라미터({})를 받는 어노테이션, 이 경우 userId값을 받아옴.
@@ -43,6 +51,11 @@ public class RepController{
         //  .(dot)이 포함된 경우, .을 포함한 그 뒤가 잘려서 들어감
         // Get Users
         try {
+            int repInxByJwt = jwtService.getrepInx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(repInx != repInxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             GetRepRes getRepRes = repProvider.getrep(repInx);
             return new BaseResponse<>(getRepRes);
         } catch (BaseException exception) {
@@ -50,8 +63,6 @@ public class RepController{
         }
 
     }
-
-
 
 
     @ResponseBody
@@ -71,6 +82,7 @@ public class RepController{
     }
 
 
+    //foodInx에 따른 가게 회원정보 불러오기 < 여러개 불러올 수 있음>
     @ResponseBody
     @GetMapping("/food")
     public BaseResponse<List<GetFoodRes>> getFood(@RequestParam(required = false) int foodInx){
@@ -83,22 +95,24 @@ public class RepController{
         }
     }
 
+
+    /*
+     * jwt 사용
+     *
+     * */
     //최소 주문금액 변경
     @ResponseBody
     @PatchMapping("/{repInx}")
     public BaseResponse<String> modifyMinPrice(@PathVariable("repInx") int repInx, @RequestBody Represent rep) {
         try {
-/**
- *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
- //jwt에서 idx 추출.
- int userIdxByJwt = jwtService.getUserIdx();
- //userIdx와 접근한 유저가 같은지 확인
- if(userIdx != userIdxByJwt){
- return new BaseResponse<>(INVALID_USER_JWT);
- }
- //같다면 유저네임 변경
- **************************************************************************
- */
+
+            //jwt에서 idx 추출.
+            int repInxByJwt = jwtService.getrepInx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(repInx != repInxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             PatchRepReq patchRepReq = new PatchRepReq(repInx, rep.getMin_price());
             repService.modifyMinPrice(patchRepReq);
 
@@ -114,7 +128,7 @@ public class RepController{
     @PostMapping("/rep-sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
     public BaseResponse<PostRepRes> createRepresents(@RequestBody PostRepReq postRepReq) {
         if (postRepReq.getRepId() == null) {
-            return new BaseResponse<>(BaseResponseStatus.POST_REPS_EMPTY_REPID);
+            return new BaseResponse<>(POST_REPS_EMPTY_REPID);
         }
         try {
             PostRepRes postRepRes = repService.createRep(postRepReq);
@@ -124,23 +138,38 @@ public class RepController{
         }
     }
 
+    //rep login
+    @ResponseBody
+    @PostMapping("/login")
+    public BaseResponse<PostRepLoginRes> logIn(@RequestBody PostRepLoginReq postRepLoginReq) {
+        try {
+            // TODO: 로그인 값들에 대한 형식적인 validation 처리해주셔야합니다!
+            // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+            PostRepLoginRes postRepLoginRes = repProvider.logIn(postRepLoginReq);
+            return new BaseResponse<>(postRepLoginRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
+
+    /*
+     * jwt 사용
+     *
+     * */
     //DELETE REP INFORMATION<TUPLE OF REPRESENT TABLE>
     @ResponseBody
     @DeleteMapping("/{repInx}")
     public BaseResponse<String> DeleteFood(@PathVariable("repInx") int repInx) {
         try {
-/**
- *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
- //jwt에서 idx 추출.
- int userIdxByJwt = jwtService.getUserIdx();
- //userIdx와 접근한 유저가 같은지 확인
- if(userIdx != userIdxByJwt){
- return new BaseResponse<>(INVALID_USER_JWT);
- }
- //같다면 유저네임 변경
- **************************************************************************
- */
+
+            //jwt에서 idx 추출.
+            int repInxByJwt = jwtService.getrepInx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(repInx != repInxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             DeleteRepReq deleteRepReq = new DeleteRepReq(repInx);
             repService.deleteRep(deleteRepReq);
 

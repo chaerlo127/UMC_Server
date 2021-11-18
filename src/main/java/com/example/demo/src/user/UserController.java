@@ -145,7 +145,7 @@ public class UserController {
 
         try {
             //jwt에서 idx 추출.
-            int userIdxByJwt = jwtService.getUserIdx();
+            int userIdxByJwt = jwtService.getuserIdx();
             //userIdx와 접근한 유저가 같은지 확인
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
@@ -169,7 +169,7 @@ public class UserController {
     public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
         try {
             //jwt에서 idx 추출.
-            int userIdxByJwt = jwtService.getUserIdx();
+            int userIdxByJwt = jwtService.getuserIdx();
             //userIdx와 접근한 유저가 같은지 확인
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
@@ -191,7 +191,7 @@ public class UserController {
     @DeleteMapping("/{userIdx}")
     public BaseResponse<String> DeleteUser(@PathVariable("userIdx") int userIdx) {
         try {
-            int userIdxByJwt = jwtService.getUserIdx();
+            int userIdxByJwt = jwtService.getuserIdx();
             //userIdx와 접근한 유저가 같은지 확인
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);

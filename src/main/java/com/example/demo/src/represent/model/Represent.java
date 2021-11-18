@@ -16,7 +16,7 @@ public class Represent {
     private String close_time;
     private String phone;
     private String close_date;
-    private String foodInx;
+    private int foodInx;
 
 
 }
