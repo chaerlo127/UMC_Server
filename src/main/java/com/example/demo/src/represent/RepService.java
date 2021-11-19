@@ -78,4 +78,9 @@ public class RepService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //rep count
+    public int repCount() {
+        return repDao.repCount();
+    }
 }

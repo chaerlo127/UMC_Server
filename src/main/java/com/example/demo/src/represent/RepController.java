@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
-import static com.example.demo.config.BaseResponseStatus.POST_REPS_EMPTY_REPID;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 
 @RestController // Rest API 또는 WebAPI를 개발하기 위한 어노테이션. @Controller + @ResponseBody 를 합친것.
@@ -85,8 +84,20 @@ public class RepController{
     @GetMapping("/page-of-all")
     public BaseResponse<List<GetRepRes>> getRepsPage(@RequestParam(required = false) int page,
                                                      @RequestParam(required = false) int size){
-        try {
+       //repInx의 개수 불러오기(count)
+        int repCount = repService.repCount();
+        if((repCount%2!=0)){
+            if(((repCount/size)+1)<page){
+                return new BaseResponse<>(PAGING_COUNT_ERROR);
+            }
+        }else{
+            if(((repCount/size))<page){
+                return new BaseResponse<>(PAGING_COUNT_ERROR);
+            }
+        }
 
+
+        try {
             List<GetRepRes> getRepRes = repProvider.getrepPage(page, size);
             return new BaseResponse<>(getRepRes);
         } catch (BaseException exception) {

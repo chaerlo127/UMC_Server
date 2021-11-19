@@ -73,4 +73,8 @@ public class FoodService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public int getLastfoodInx() {
+        return foodDao.getLastfoodInx();
+    }
 }

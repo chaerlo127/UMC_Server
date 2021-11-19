@@ -64,8 +64,6 @@ public class FoodDao {
 
     //foods 전부 조회
     public List<GetFoodRes> getFoods(String pageSQL, String sizeSQL) {
-
-
         String getFoodsQuery = "select * from Food limit "+ pageSQL +","+ sizeSQL; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
         return this.jdbcTemplate.query(getFoodsQuery,
                 (rs, rowNum) -> new GetFoodRes(
@@ -79,5 +77,11 @@ public class FoodDao {
         Object[] deleteFoodNameParams = new Object[]{deleteFoodReq.getFoodInx()}; // 주입될 값들(nickname, userIdx) 순
 
         return this.jdbcTemplate.update(deleteFoodNameQuery, deleteFoodNameParams);
+    }
+
+    //마지막의 foodInx 번호 불러옴
+    public int getLastfoodInx() {
+        String getLastfoodInxQuery = "select count(*) from Food";
+        return this.jdbcTemplate.queryForObject(getLastfoodInxQuery, int.class);
     }
 }

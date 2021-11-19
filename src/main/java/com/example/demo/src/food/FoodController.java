@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.POST_FOODS_EMPTY_NAME;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 
 @RestController
@@ -99,9 +99,20 @@ public class FoodController {
     // GET 방식의 요청을 매핑하기 위한 어노테이션
     public BaseResponse<List<GetFoodRes>> getUsers(@RequestParam(required = false) int page
             , @RequestParam(required = false) int size) {
-        //  @RequestParam은, 1개의 HTTP Request 파라미터를 받을 수 있는 어노테이션(?뒤의 값). default로 RequestParam은 반드시 값이 존재해야 하도록 설정되어 있지만, (전송 안되면 400 Error 유발)
-        //  지금 예시와 같이 required 설정으로 필수 값에서 제외 시킬 수 있음
-        //  defaultValue를 통해, 기본값(파라미터가 없는 경우, 해당 파라미터의 기본값 설정)을 지정할 수 있음
+
+        //마지막 foodInx 값 불러오기
+        int lastFoodInx = foodService.getLastfoodInx();
+
+        if((lastFoodInx%2!=0)){
+            if(((lastFoodInx/size)+1)<page){
+                return new BaseResponse<>(PAGING_COUNT_ERROR);
+            }
+        }else {
+            if((lastFoodInx/size)<page){
+                return new BaseResponse<>(PAGING_COUNT_ERROR);
+            }
+        }
+
         try {
             List<GetFoodRes> getFoodRes = foodprovider.getFoods(page, size);
             return new BaseResponse<>(getFoodRes);

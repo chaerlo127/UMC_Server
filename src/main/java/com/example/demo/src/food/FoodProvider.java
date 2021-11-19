@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class FoodProvider {
@@ -42,12 +42,17 @@ public class FoodProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //paging
     public List<GetFoodRes> getFoods(int page, int size) throws BaseException {
         try {
+
             String pageSQL = Integer.toString(size*(page-1));
             String sizeSQL = Integer.toString(size);
             List<GetFoodRes> getFoodRes = foodDao.getFoods(pageSQL, sizeSQL);
+
             return getFoodRes;
+
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

@@ -163,4 +163,9 @@ public class RepDao {
 
         return this.jdbcTemplate.update(deleteFoodNameQuery, deleteFoodNameParams);
     }
+
+    public int repCount() {
+        String repCountQuery = "select count(*) from Represent";
+        return this.jdbcTemplate.queryForObject(repCountQuery, int.class);
+    }
 }
