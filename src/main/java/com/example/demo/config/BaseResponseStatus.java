@@ -78,9 +78,9 @@ public enum BaseResponseStatus {
     /**
      * 5000 : Paging Error
      */
-
-    PAGING_COUNT_ERROR(false, 5000, "페이지 최대 개수를 초과했습니다.");
     // 5000 : 필요시 만들어서 쓰세요
+    PAGING_COUNT_ERROR(false, 5000, "페이지 최대 개수를 초과했습니다.");
+
     // 6000 : 필요시 만들어서 쓰세요
 
 
