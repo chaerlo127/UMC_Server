@@ -97,7 +97,7 @@ public class FoodController {
     @ResponseBody
     @GetMapping("")
     // GET 방식의 요청을 매핑하기 위한 어노테이션
-    public BaseResponse<List<GetFoodRes>> getUsers(@RequestParam(required = false) int page
+    public BaseResponse<List<GetFoodRes>> getFood(@RequestParam(required = false) int page
             , @RequestParam(required = false) int size) {
 
         //마지막 foodInx 값 불러오기
