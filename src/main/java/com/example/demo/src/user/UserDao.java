@@ -5,6 +5,7 @@ import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -55,6 +56,7 @@ public class UserDao {
      */
 
     // 회원가입
+    @Transactional
     public int createUser(PostUserReq postUserReq) {
         String createUserQuery = "insert into User (name, userId, password, email, Phone, Address) VALUES (?,?,?,?,?,?)"; // 실행될 동적 쿼리문
         Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getUserId(), postUserReq.getPassword(),
@@ -68,6 +70,7 @@ public class UserDao {
     }
 
     // 이메일 확인
+    @Transactional(readOnly = true)
     public int checkEmail(String email) {
         String checkEmailQuery = "select exists(select email from User where email = ?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
         String checkEmailParams = email; // 해당(확인할) 이메일 값
@@ -77,6 +80,7 @@ public class UserDao {
     }
 
     // 회원정보 변경
+    @Transactional
     public int modifyUserName(PatchUserReq patchUserReq) {
         String modifyUserNameQuery = "update User set name = ? where userIdx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
         Object[] modifyUserNameParams = new Object[]{patchUserReq.getName(), patchUserReq.getUserIdx()}; // 주입될 값들(nickname, userIdx) 순
@@ -86,6 +90,7 @@ public class UserDao {
 
 
 //    // 로그인: 해당 email에 해당되는 user의 암호화된 비밀번호 값을 가져온다.
+    @Transactional(readOnly = true)
     public User getPwd(PostLoginReq postLoginReq) {
         String getPwdQuery = "select userIdx,name,userId,password,email,address,phone from User where email = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
         String getPwdParams = postLoginReq.getEmail(); // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
@@ -105,6 +110,7 @@ public class UserDao {
     }
 
     // User 테이블에 존재하는 전체 유저들의 정보 조회
+    @Transactional(readOnly = true)
     public List<GetUserRes> getUsers() {
         String getUsersQuery = "select * from User"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
         return this.jdbcTemplate.query(getUsersQuery,
@@ -120,6 +126,7 @@ public class UserDao {
     }
 
     // 해당 name을 갖는 유저들의 정보 조회
+    @Transactional(readOnly = true)
     public List<GetUserRes> getUsersByName(String name) {
         String getUsersByNameQuery = "select * from User where name =?"; // 해당 이메일을 만족하는 유저를 조회하는 쿼리문
         String getUsersByNameParams = name;
@@ -136,6 +143,7 @@ public class UserDao {
     }
 
     // 해당 userIdx를 갖는 유저조회
+    @Transactional(readOnly = true)
     public GetUserRes getUser(int userIdx) {
         String getUserQuery = "select * from User where userIdx = ?"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
         int getUserParams = userIdx;
@@ -152,6 +160,7 @@ public class UserDao {
     }
 
     //USER table tuple 삭제
+    @Transactional
     public int deleteUser(DeleteUserReq deleteUserReq) {
         String deleteUserQuery = "delete from User where userIdx = ?"; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
         Object[] deleteUserParams = new Object[]{deleteUserReq.getUserIdx()}; // 주입될 값들(nickname, userIdx) 순

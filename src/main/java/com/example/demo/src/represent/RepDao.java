@@ -4,6 +4,7 @@ import com.example.demo.src.represent.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -16,6 +17,9 @@ public class RepDao {
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+
+   @Transactional(readOnly = true)
     public GetRepRes getRep(int repInx) {
         String getRepQuery = "select repInx,name,RepId,password,min_price,address,close_time," +
                 "phone,foodInx from Represent where repInx = ?";
@@ -37,6 +41,7 @@ public class RepDao {
 
 
 
+    @Transactional(readOnly = true)
     public List<GetRepRes> getreps() {
         String getRepQuery = "select repInx,name,RepId,password,min_price,address,close_time,phone,foodInx from Represent"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
         return this.jdbcTemplate.query(getRepQuery,
@@ -53,6 +58,8 @@ public class RepDao {
         );
     }
 
+
+    @Transactional(readOnly = true)
     public List<GetRepRes> getrepsByrepId(String repId) {
         String getRepByrepIdQuery = "select repInx,name,RepId,password,min_price," +
                 "address,close_time,phone,foodInx from Represent where repId =?"; // 해당 이메일을 만족하는 유저를 조회하는 쿼리문
@@ -71,6 +78,8 @@ public class RepDao {
                 getRepByrepIdParams);
     }
 
+
+    @Transactional(readOnly = true)
     public List<GetRepRes> getrepsPage(String pageSQL, String sizeSQL) {
         String getRepByrepIdQuery = "select repInx,name,RepId,password,min_price," +
                 "address,close_time,phone,foodInx from Represent limit " + pageSQL+","+sizeSQL; // 해당 이메일을 만족하는 유저를 조회하는 쿼리문
@@ -89,6 +98,8 @@ public class RepDao {
         );
     }
 
+
+    @Transactional(readOnly = true)
     public List<GetFoodRes> getrepByFoodInx(int foodInx) {
         String getRepByFoodInx = "select repInx, name, foodInx " +
                 "from Represent " +
@@ -103,6 +114,7 @@ public class RepDao {
     }
 
 
+    @Transactional
     public int modifyMinPrice(PatchRepReq patchRepReq) {
         String modifyMinPriceQuery = "update Represent set min_price = ? where repInx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
         Object[] modifyMinPriceParams = new Object[]{patchRepReq.getMin_price(), patchRepReq.getRepInx()}; // 주입될 값들(nickname, userIdx) 순
@@ -112,6 +124,7 @@ public class RepDao {
     }
 
     // 로그인: 해당 email에 해당되는 user의 암호화된 비밀번호 값을 가져온다.
+    @Transactional(readOnly = true)
     public Represent getPwd(PostRepLoginReq postRepLoginReq) {
         String getPwdQuery = "select repInx,name,repId,password,min_price," +
                 "address,close_time,phone,closed_date,foodInx from Represent where repId = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
@@ -134,6 +147,7 @@ public class RepDao {
     }
 
     //repId 중복 확인
+    @Transactional(readOnly = true)
     public int checkRepId(String repId) {
         String checkRepNameQuery = "select exists(select repId from Represent where repId = ?)";
         String checkRepNameParams = repId;
@@ -143,6 +157,7 @@ public class RepDao {
     }
 
     //represent 회원가입
+    @Transactional
     public int createRep(PostRepReq postRepReq) {
         String createRepQuery = "insert into Represent (name, repId, password, min_price, address, " +
                 "close_time, foodInx, closed_date, phone) VALUES (?,?,?,?,?,?,?,?,?)"; // 실행될 동적 쿼리문
@@ -157,6 +172,7 @@ public class RepDao {
     }
 
     //REP 삭제<TUPLE>
+    @Transactional
     public int deleteRep(DeleteRepReq deleteRepReq) {
         String deleteFoodNameQuery = "delete from Represent where RepInx = ?"; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
         Object[] deleteFoodNameParams = new Object[]{deleteRepReq.getRepInx()}; // 주입될 값들(nickname, userIdx) 순
@@ -164,6 +180,7 @@ public class RepDao {
         return this.jdbcTemplate.update(deleteFoodNameQuery, deleteFoodNameParams);
     }
 
+    @Transactional
     public int repCount() {
         String repCountQuery = "select count(*) from Represent";
         return this.jdbcTemplate.queryForObject(repCountQuery, int.class);
