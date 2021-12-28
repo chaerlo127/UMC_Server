@@ -169,6 +169,7 @@ public class UserDao {
     }
 
 
+    @Transactional(readOnly = true)
     public List<GetUserRes> getHasUserIdx() {
         String getHasUserIdxQuery = "select distinct User.userIdx, name, userId, password, email, phone, address  from User, UserReceipt where User.userIdx = UserReceipt.userInx ";
         return this.jdbcTemplate.query(getHasUserIdxQuery,
