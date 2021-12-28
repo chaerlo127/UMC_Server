@@ -171,7 +171,8 @@ public class UserDao {
 
     @Transactional(readOnly = true)
     public List<GetUserRes> getHasUserIdx() {
-        String getHasUserIdxQuery = "select distinct User.userIdx, name, userId, password, email, phone, address  from User, UserReceipt where User.userIdx = UserReceipt.userInx ";
+        String getHasUserIdxQuery = "select distinct User.userIdx, name, userId, password, " +
+                "email, phone, address  from User, UserReceipt where User.userIdx = UserReceipt.userInx ";
         return this.jdbcTemplate.query(getHasUserIdxQuery,
                 (rs, rowNum) -> new GetUserRes(
                         rs.getInt("userIdx"),
@@ -181,6 +182,19 @@ public class UserDao {
                         rs.getString("email"),
                         rs.getString("Phone"),
                         rs.getString("Address")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public List<GetReceiptUserRes> getHasUserName() {
+        String getHasUserNameQuery = "select User.userIdx, name, receiptInx, payMethod " +
+                "from User, UserReceipt where User.userIdx = UserReceipt.userInx";
+        return this.jdbcTemplate.query(getHasUserNameQuery,
+                (rs, rowNum) -> new GetReceiptUserRes(
+                        rs.getInt("userIdx"),
+                        rs.getString("name"),
+                        rs.getInt("receiptInx"),
+                        rs.getString("payMethod")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
         );
     }
 }

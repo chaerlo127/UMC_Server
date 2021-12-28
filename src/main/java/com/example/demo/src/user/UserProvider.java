@@ -111,4 +111,13 @@ public class UserProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<GetReceiptUserRes> getHasUserName() throws BaseException{
+        try {
+            List<GetReceiptUserRes> getReceiptUserRes = userDao.getHasUserName();
+            return getReceiptUserRes;
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
