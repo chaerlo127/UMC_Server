@@ -103,4 +103,12 @@ public class UserProvider {
         }
     }
 
+    public List<GetUserRes> getHasUserIdx() throws BaseException{
+        try {
+            List<GetUserRes> getUserRes = userDao.getHasUserIdx();
+            return getUserRes;
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

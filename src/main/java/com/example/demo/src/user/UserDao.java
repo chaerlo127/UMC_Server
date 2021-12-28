@@ -167,4 +167,19 @@ public class UserDao {
 
         return this.jdbcTemplate.update(deleteUserQuery, deleteUserParams);
     }
+
+
+    public List<GetUserRes> getHasUserIdx() {
+        String getHasUserIdxQuery = "select distinct User.userIdx, name, userId, password, email, phone, address  from User, UserReceipt where User.userIdx = UserReceipt.userInx ";
+        return this.jdbcTemplate.query(getHasUserIdxQuery,
+                (rs, rowNum) -> new GetUserRes(
+                        rs.getInt("userIdx"),
+                        rs.getString("name"),
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("Phone"),
+                        rs.getString("Address")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+        );
+    }
 }

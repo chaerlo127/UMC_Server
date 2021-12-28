@@ -206,4 +206,20 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+
+    //주문한 이력이 있는 User 정보 불러오기
+    @ResponseBody
+    @GetMapping("/has-userIdx")
+    public BaseResponse<List<GetUserRes>> getHasUserIdx() {
+        //  @RequestParam은, 1개의 HTTP Request 파라미터를 받을 수 있는 어노테이션(?뒤의 값). default로 RequestParam은 반드시 값이 존재해야 하도록 설정되어 있지만, (전송 안되면 400 Error 유발)
+        //  지금 예시와 같이 required 설정으로 필수 값에서 제외 시킬 수 있음
+        //  defaultValue를 통해, 기본값(파라미터가 없는 경우, 해당 파라미터의 기본값 설정)을 지정할 수 있음
+        try {
+            List<GetUserRes> getUserRes = userProvider.getHasUserIdx();
+            return new BaseResponse<>(getUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

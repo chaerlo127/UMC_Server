@@ -96,7 +96,6 @@ public class RepController{
             }
         }
 
-
         try {
             List<GetRepRes> getRepRes = repProvider.getrepPage(page, size);
             return new BaseResponse<>(getRepRes);
