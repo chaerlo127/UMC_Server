@@ -236,5 +236,28 @@ public class UserController {
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
- }
+    }
+    @ResponseBody
+    @PatchMapping("/change-userId/{userIdx}")
+    public BaseResponse<String> modifyUserId(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
+        try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getuserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //같다면 유저네임 변경
+
+            PatchUserIdReq patchUserIdReq = new PatchUserIdReq(userIdx, user.getUserId());
+            userService.modifyUserIdName(patchUserIdReq);
+
+            String result = "회원정보(아이디)가 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 }

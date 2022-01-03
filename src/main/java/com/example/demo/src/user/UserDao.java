@@ -197,4 +197,12 @@ public class UserDao {
                         rs.getString("payMethod")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
         );
     }
+
+    @Transactional
+    public int modifyUserIdName(PatchUserIdReq patchUserIdReq) {
+        String modifyUserIDQuery = "update User set userId = ? where userIdx = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
+        Object[] modifyUserNameParams = new Object[]{patchUserIdReq.getUserId(), patchUserIdReq.getUserIdx()}; // 주입될 값들(nickname, userIdx) 순
+
+        return this.jdbcTemplate.update(modifyUserIDQuery, modifyUserNameParams);
+    }
 }

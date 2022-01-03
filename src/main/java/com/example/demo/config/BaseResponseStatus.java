@@ -63,6 +63,7 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
     MODIFY_FAIL_REPPRICE(false, 4015, "rep min_price 수정 실패"),
     MODIFY_FAIL_FOODNAME(false,4016,"FOODNAME 수정 실패"),
+    MODIFY_FAIL_USERID(false,4014,"유저아이디 수정 실패"),
 
     //[DELETE] /users/{userIdx}
     DELETE_FAIL_ROWS_USER(false,4017,"지정한 foodInx의 tuple이 없습니다."),
