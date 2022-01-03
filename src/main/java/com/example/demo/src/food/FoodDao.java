@@ -1,10 +1,7 @@
 package com.example.demo.src.food;
 
 
-import com.example.demo.src.food.Model.DeleteFoodReq;
-import com.example.demo.src.food.Model.GetFoodRes;
-import com.example.demo.src.food.Model.PatchFoodReq;
-import com.example.demo.src.food.Model.PostFoodReq;
+import com.example.demo.src.food.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,6 +13,8 @@ import java.util.List;
 @Repository
 public class FoodDao {
     private JdbcTemplate jdbcTemplate;
+
+    
 
     @Autowired //readme 참고
     public void setDataSource(DataSource dataSource) {
@@ -94,5 +93,17 @@ public class FoodDao {
     public int getLastfoodInx() {
         String getLastfoodInxQuery = "select count(*) from Food";
         return this.jdbcTemplate.queryForObject(getLastfoodInxQuery, int.class);
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<GetRepFoodRes> getRepFood() {
+        String getRepFoodQuery = "select Represent.name, Food.foodName " +
+                "from Represent, Food where Represent.foodInx = Food.foodInx";
+        return this.jdbcTemplate.query(getRepFoodQuery,
+                (rs, rowNum) -> new GetRepFoodRes(
+                        rs.getString("name"),
+                        rs.getString("foodName")) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+        );
     }
 }

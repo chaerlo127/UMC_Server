@@ -2,6 +2,8 @@ package com.example.demo.src.food;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.src.food.Model.GetFoodRes;
+import com.example.demo.src.food.Model.GetRepFoodRes;
+import com.example.demo.src.user.model.GetReceiptUserRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,4 +60,12 @@ public class FoodProvider {
         }
     }
 
+    public List<GetRepFoodRes> getRepFood() throws BaseException{
+        try{
+            List<GetRepFoodRes> getRepFoodRes = foodDao.getRepFood();
+            return getRepFoodRes;
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
